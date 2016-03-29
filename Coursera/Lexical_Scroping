@@ -1,0 +1,57 @@
+# Make a matrix with the name CacheMatrix 
+ CacheMatrix <- function(x = numeric()) { 
+
+   # initially nothing is cached so set cache it to NULL 
+         cache <- NULL 
+          
+         # Store a matrix 
+         setMatrix <- function(newValue) { 
+                 x <<- newValue 
+                 # since the matrix is assigned a new value, flush the cache 
+                 cache <<- NULL 
+         } 
+ 
+ 
+         # Returns the matrix which is stored 
+         getMatrix <- function() { 
+                 x 
+         } 
+ 
+ 
+         # cache the argument  
+         cacheInverse <- function(solve) { 
+                 cache <<- solve 
+         } 
+ 
+ 
+         # Retrieve the cached value 
+         getInverse <- function() { 
+                 cache 
+         } 
+          
+         # return a list. Each named element of the list is a function 
+         list(setMatrix = setMatrix, getMatrix = getMatrix, cacheInverse = cacheInverse, getInverse = getInverse) 
+ } 
+ 
+ 
+ 
+ 
+ # The given below function will create the inverse of a "special" matrix created with  
+ # CacheMatrix 
+ cacheSolve <- function(y, ...) { 
+
+         inverse <- y$getInverse() 
+         
+         if(!is.null(inverse)) { 
+                 message("getting cached data") 
+                 return(inverse) 
+         } 
+         
+         
+         data <- y$getMatrix() 
+         inverse <- solve(data) 
+         y$cacheInverse(inverse) 
+          
+         # this will return the inverse 
+         inverse 
+ } 
